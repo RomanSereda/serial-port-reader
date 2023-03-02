@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtCore>
 #include <QSerialPort>
+class Console;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,6 +24,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QSerialPort* serialPort;
+    Console* console;
     bool isStarted = false;
 
     bool start();

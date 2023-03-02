@@ -1,12 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QPlainTextEdit>
+#include "console.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , console(new Console(this))
 {
     ui->setupUi(this);
+
+    console->setEnabled(false);
+
+    QGridLayout *layout = findChild<QGridLayout*>("gridLayout");
+    layout->addWidget(console);
 }
 
 MainWindow::~MainWindow()
@@ -28,11 +34,14 @@ bool MainWindow::start()
     connect(serialPort, &QSerialPort::readyRead, this, &MainWindow::handleReadyRead);
     connect(serialPort, static_cast<void (QSerialPort::*)(QSerialPort::SerialPortError)>(&QSerialPort::error),this, &MainWindow::handleError);
 
-
     serialPort->setPortName(serialNum);
     serialPort->setBaudRate(serialSpeed.toInt());
 
-    serialPort->open(QIODevice::ReadOnly);
+    if(serialPort->open(QIODevice::ReadOnly))
+    {
+        console->setEnabled(true);
+        console->setLocalEchoEnabled(false);
+    }
 
     auto button = findChild<QPushButton*>("startStopButton");
     button->setText("Stop");
@@ -48,6 +57,8 @@ bool MainWindow::stop()
     auto button = findChild<QPushButton*>("startStopButton");
     button->setText("Start");
 
+    console->setEnabled(false);
+
     return false;
 }
 
@@ -61,8 +72,7 @@ void MainWindow::handleError(QSerialPort::SerialPortError serialPortError)
 
 void MainWindow::handleReadyRead()
 {
-    auto textBrowser = findChild<QPlainTextEdit*>("plainTextEdit");
-    QString text = serialPort->readAll();
-    textBrowser->appendPlainText(text);
+    const QByteArray data = serialPort->readAll();
+    console->putData(data);
 }
 

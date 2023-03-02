@@ -24,8 +24,8 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
-      <width>181</width>
+      <y>10</y>
+      <width>310</width>
       <height>21</height>
      </rect>
     </property>
@@ -53,15 +53,20 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit">
+   <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
+      <y>50</y>
       <width>511</width>
-      <height>581</height>
+      <height>541</height>
      </rect>
     </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+    </layout>
    </widget>
   </widget>
  </widget>
