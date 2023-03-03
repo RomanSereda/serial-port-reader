@@ -9,8 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    console->setEnabled(false);
-
     QGridLayout *layout = findChild<QGridLayout*>("gridLayout");
     layout->addWidget(console);
 }
@@ -39,7 +37,6 @@ bool MainWindow::start()
 
     if(serialPort->open(QIODevice::ReadOnly))
     {
-        console->setEnabled(true);
         console->setLocalEchoEnabled(false);
     }
 
@@ -56,8 +53,6 @@ bool MainWindow::stop()
 
     auto button = findChild<QPushButton*>("startStopButton");
     button->setText("Start");
-
-    console->setEnabled(false);
 
     return false;
 }
