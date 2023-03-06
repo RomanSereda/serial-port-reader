@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QGridLayout *layout = findChild<QGridLayout*>("gridLayout");
     layout->addWidget(console);
+    setFixedSize(size());
 }
 
 MainWindow::~MainWindow()
